@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 
 .idea
+.vscode
+node_modules
+emg-fe/node_modules
