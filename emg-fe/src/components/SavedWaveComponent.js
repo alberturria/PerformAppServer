@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import Spinner from "react-bootstrap/Spinner";
 import PropTypes from 'prop-types';
 import ChartComponent from "./ChartComponent";
+import GetRmsSectionsUseCase from "../useCases/GetRmsSectionsUseCase";
 
 
 class SavedWaveComponent extends Component{
@@ -9,21 +11,62 @@ class SavedWaveComponent extends Component{
 
         this.state = {
             parsedMuscle: null,
+            rmsSections: null,
+            loading:false,
         };
+
+        this.rmsChartRef = React.createRef();
 
 
         this._parseMuscleName = this._parseMuscleName.bind(this);
+        this._getRmsSections = this._getRmsSections.bind(this);
     }
 
     componentDidMount() {
         this._parseMuscleName();
     }
 
-    _parseMuscleName(){
+    _parseMuscleName() {
         const { muscle } = this.props;
 
         const parsedMuscle = muscle.split('_')[1];
         this.setState({ parsedMuscle: parsedMuscle });
+    }
+
+    _getRmsSections() {
+        const { id } = this.props;
+        this.setState({ loading: true });
+        const getRmsSectionsUseCase = new GetRmsSectionsUseCase(id);
+
+        getRmsSectionsUseCase.run()
+            .then(() => {
+                const rmsSections = getRmsSectionsUseCase.getRmsSections();
+                this.setState({ rmsSections: rmsSections, loading: false });
+                this.rmsChartRef.current.hoverSections(rmsSections);
+            });
+    }
+
+    _renderSpinner() {
+        const { loading } = this.state;
+        if(loading){
+            return (
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            )
+        }
+    }
+
+    _renderSections() {
+        const { rmsSections } = this.state;
+
+        if (rmsSections) {
+            return rmsSections.map(({
+                start, end, values, waveId
+            }) => (
+                <ChartComponent title={`Sección`} data={values} start={start} />
+            ));
+        }
     }
 
     render() {
@@ -43,7 +86,13 @@ class SavedWaveComponent extends Component{
                         <li><span className='wave-field'>Máxima contracción voluntaria histórica: </span>{historicMvc} </li>
                     </ul>
                 </div>
-                <ChartComponent title="RMS" data={rms} />
+                <ChartComponent ref={this.rmsChartRef} title="RMS" data={rms} />
+                <button
+                    onClick={this._getRmsSections}>
+                    Ver contracciones
+                </button>
+                {this._renderSpinner()}
+                {this._renderSections()}
             </div>
         )
     }

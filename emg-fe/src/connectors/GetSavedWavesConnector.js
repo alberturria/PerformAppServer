@@ -32,8 +32,6 @@ export default class GetSavedWavesConnector extends GetSavedWavesConnectorInterf
             return returnedWaves;
         })
 
-        
-//
     }
 }
 

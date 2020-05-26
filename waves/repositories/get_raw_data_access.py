@@ -1,6 +1,4 @@
 import ast
-import math
-import numpy as np
 
 from waves.interfaces.repositories.get_raw_data_access_interface import GetRAWDataAccessInterface
 from waves.models import Wave

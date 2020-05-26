@@ -9,6 +9,7 @@ class ChartComponent extends Component {
         
         this.state = {
             dataPoints: null,
+            stripLines: [],
         }
 
         this._parseData = this._parseData.bind(this);
@@ -18,13 +19,22 @@ class ChartComponent extends Component {
         this._parseData();
     }
 
+    hoverSections(sections) {
+        let newStripLines = [];
+        for (let index = 0; index < sections.length; index += 1) {
+            newStripLines.push({startValue:sections[index].start, endValue:sections[index].end, color:"#d8d8d8"});
+        }
+       
+        this.setState({stripLines:newStripLines});
+    }
+
     _parseData() {
-        const { data } = this.props;
+        const { data, start } = this.props;
 
         const parsedData = [];
 
         for (let index = 0; index < data.length; index +=1 ){
-            const tuple = {x: index, y: data[index]};
+            const tuple = {x: index + start, y: data[index]};
 
             parsedData.push(tuple);
         }
@@ -36,7 +46,7 @@ class ChartComponent extends Component {
 
 	render() {
 
-        const { dataPoints } = this.state;
+        const { dataPoints, stripLines } = this.state;
         const { title } = this.props;
 
 		const options = {
@@ -48,7 +58,7 @@ class ChartComponent extends Component {
 				text: title
 			},
 			axisX: {
-				
+				stripLines: stripLines
 			},
 			axisY: {
 				title: "Amplitud (µV)",
@@ -73,4 +83,9 @@ export default ChartComponent;
 ChartComponent.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
+    start: PropTypes.number
+}
+
+ChartComponent.defaultProps = {
+    start: 0,
 }
