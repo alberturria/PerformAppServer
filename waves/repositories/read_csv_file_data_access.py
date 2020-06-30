@@ -1,20 +1,22 @@
-import csv
 import pandas as pd
+from waves.interfaces.repositories.read_csv_file_data_access_interface import ReadCSVFileDataAccessInterface
+from waves.models import Wave
 
-from waves.models import Wave, Suite
 
+class ReadCSVFileDataAccess(ReadCSVFileDataAccessInterface):
+    def __init__(self, file, user_id):
+        self._file = file
+        self._user_id = user_id
 
-def read_csv_file(file_path):
-    csv_file = pd.read_csv(file_path, sep=';')
-    headers = csv_file.columns
-    names = csv_file[headers[0]]
-    avg_rms = csv_file[headers[1]]
-    rms_per_seconds = csv_file[headers[2]]
-    mvcs = csv_file[headers[3]]
-    historic_mvcs = csv_file[headers[4]]
-    waves = Wave.objects.all()
-    if len(waves) == 0:
-        csv_file = pd.read_csv(file_path, sep=';')
+    def import_data(self):
+        csv_file = pd.read_csv(self._file, sep=';')
+        headers = csv_file.columns
+        names = csv_file[headers[0]]
+        avg_rms = csv_file[headers[1]]
+        rms_per_seconds = csv_file[headers[2]]
+        mvcs = csv_file[headers[3]]
+        historic_mvcs = csv_file[headers[4]]
+        csv_file = pd.read_csv(self._file, sep=';')
         headers = csv_file.columns
         names = csv_file[headers[0]]
         avg_rmss = csv_file[headers[1]]
@@ -51,6 +53,6 @@ def read_csv_file(file_path):
                 mvc = mvcs[index]
                 historic_mvc = historic_mvcs[index]
                 raw = total_raw[index]
-                suite = Suite.objects.first()
-                wave = Wave(muscle=muscle_name, rms=rms, avg_rms=avg_rms, mvc=mvc, historic_mvc=historic_mvc, raw=raw, suite=suite)
+                wave = Wave(muscle=muscle_name, rms=rms, avg_rms=avg_rms, mvc=mvc, historic_mvc=historic_mvc,
+                            raw=raw)
                 wave.save()

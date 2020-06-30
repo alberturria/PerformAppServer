@@ -9,6 +9,8 @@ from waves.use_cases.get_data_range_use_case import GetDataRangeUseCase
 from waves.use_cases.get_kurtosis_use_case import GetKurtosisUseCase
 from waves.use_cases.get_sections_use_case import GetSectionsUseCase
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'src.settings')
+
 django.setup()
 
 import matplotlib.pyplot as plt
@@ -35,9 +37,9 @@ def main():
     try:
         from django.core.management import execute_from_command_line
 
-        #read_csv_file('./data/basic_mdurance_1.csv')
-        get_wave_data_access = GetWavesDataAccess()
-        waves = get_wave_data_access.get_waves()
+        read_csv_file('./data/basic_mdurance_1.csv')
+    #    get_wave_data_access = GetWavesDataAccess()
+    #    waves = get_wave_data_access.get_waves()
 
         #compare_use_case = CompareAllRMSPerSectionsUseCase(waves)
         #compare_use_case.run()
@@ -62,9 +64,9 @@ def main():
         ## draw_wave_use_case = DrawWaveUseCase(mdf_wave)
         ## draw_wave_use_case.run()
 
-        get_mnf_use_case = GetMNFUseCase(waves[0]._raw)
-        get_mnf_use_case.run()
-        mnf_wave = get_mnf_use_case.get_result()
+   #     get_mnf_use_case = GetMNFUseCase(waves[0]._raw)
+    #    get_mnf_use_case.run()
+     #   mnf_wave = get_mnf_use_case.get_result()
 
         #draw_wave_use_case = DrawWaveUseCase(mnf_wave)
         ##draw_wave_use_case.run()
@@ -93,16 +95,16 @@ def main():
         #get_data_range_use_case.run()
         #range = get_data_range_use_case.get_result()
 
-        get_zero_crossing_counts_use_case = GetZeroCrossingCountsUseCase(waves[0]._raw)
-        get_zero_crossing_counts_use_case.run()
-        zcc = get_zero_crossing_counts_use_case.get_result()
+  #      get_zero_crossing_counts_use_case = GetZeroCrossingCountsUseCase(waves[0]._raw)
+   #     get_zero_crossing_counts_use_case.run()
+    #    zcc = get_zero_crossing_counts_use_case.get_result()
 
         #get_psdf_use_case = GetPSDFUseCase(waves[0]._raw)
         #get_psdf_use_case.run()
         #frequencies, psdf = get_psdf_use_case.get_result()
 
-        get_wavelet_use_case = GetWaveletUseCase(waves[0]._raw)
-        get_wavelet_use_case.run()
+   #     get_wavelet_use_case = GetWaveletUseCase(waves[0]._raw)
+    #    get_wavelet_use_case.run()
 
 
     except ImportError as exc:
