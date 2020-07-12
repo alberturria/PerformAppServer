@@ -66,24 +66,25 @@ li a {
 
 .wave-card {
   border-radius: 10px;
-  background-color: #F5F5DC;
   margin: 5px 20px;
   -webkit-box-shadow: 10px 10px 19px -6px rgba(0,0,0,0.75);
   -moz-box-shadow: 10px 10px 19px -6px rgba(0,0,0,0.75);
   box-shadow: 10px 10px 19px -6px rgba(0,0,0,0.75);;
   padding: 5px 10px;
   height: fit-content;
-  width: 20%;
+  max-width: 95%;
   margin-bottom: 30px;
 }
 
-.wave-card:hover {
-  background-color: #FFF2C2;
+.li-wave-card-details {
+  float: left;
+  display: inline-flex;
+  width: 100%;
 }
 
 .wave-title {
   margin-top: 0;
-  font-size: 30px;
+  font-size: 15px;
   font-weight: bold;
   color: #464e47;
 }
@@ -91,7 +92,7 @@ li a {
 .wave-info {
   margin: 5px 10px;
   padding: 5px 10px;
-  min-height: 300px;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -294,6 +295,7 @@ li a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 98vh;
 }
 
 .informative-main-pane-header {
@@ -309,6 +311,11 @@ li a {
   margin-bottom: 20px;
   text-align: center;
   padding: 15px;
+  max-height: inherit;
+}
+
+.overflow-y {
+  overflow-y: scroll;
 }
 
 .select-file {
@@ -345,6 +352,11 @@ li a {
   border-bottom: 1px solid;
 }
 
+.suite-li:hover {
+  background-color: lightcyan;
+  cursor: pointer;
+}
+
 .suite-li:first-child{
   border-top: 1px solid;
   border-bottom: 1px solid;
@@ -368,4 +380,12 @@ li a {
 .suite-ul {
   display: inline-flex;
   flex-direction: column;
+}
+.detailed-suite-close{
+  position: absolute;
+  top: 25px;
+  right: 15px;
+}
+.wave-sections-container{
+  margin-top: 20px;
 }

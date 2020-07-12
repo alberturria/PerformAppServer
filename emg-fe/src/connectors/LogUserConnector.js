@@ -27,7 +27,7 @@ export default class LogUserConnector extends LogUserConnectorInterface {
         {
           this.userInfo = {userId: response.data.user_id, username: response.data.username };
         })
-        .catch(error => console.log(error))
+        .catch(error => this.userInfo = {userId: null, username: null })
       
       }
 

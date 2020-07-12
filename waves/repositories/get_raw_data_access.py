@@ -15,7 +15,10 @@ class GetRAWDataAccess(GetRAWDataAccessInterface):
         raw_list = ast.literal_eval(raw)
         result = []
         for value in raw_list:
-            replaced_value = value.replace(',', '.')
-            result.append(float(replaced_value))
+            if value.__class__ != float:
+                replaced_value = value.replace(',', '.')
+                result.append(float(replaced_value))
+            else:
+                result.append(value)
 
         return result

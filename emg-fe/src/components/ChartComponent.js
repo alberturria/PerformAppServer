@@ -29,7 +29,7 @@ class ChartComponent extends Component {
     }
 
     _parseData() {
-        const { data, start } = this.props;
+        const { data, start, secondData } = this.props;
 
         const parsedData = [];
 
@@ -42,35 +42,85 @@ class ChartComponent extends Component {
         this.setState({
             dataPoints: parsedData,
         });
+
+        if (secondData){
+            const parsedData = [];
+            for (let index = 0; index < secondData.length; index +=1 ){
+                const tuple = {x: index + start, y: secondData[index]};
+    
+                parsedData.push(tuple);
+            }
+    
+            this.setState({
+                secondDataPoints: parsedData,
+            });
+        }
     }
 
 	render() {
 
-        const { dataPoints, stripLines } = this.state;
+        const { dataPoints, secondDataPoints, stripLines } = this.state;
         const { title } = this.props;
+        let options = {}
 
-		const options = {
-            animationEnabled: true,
-            animationDuration: 2000,
-            zoomEnabled: true,
-            backgroundColor: "#F5F5DC",
-			title:{
-				text: title
-			},
-			axisX: {
-				stripLines: stripLines
-			},
-			axisY: {
-				title: "Amplitud (µV)",
-				includeZero: false
-			},
-			data: [{
-				yValueFormatString: "#,###",
-				xValueFormatString: "#(s)",
-				type: "spline",
-				dataPoints: dataPoints
-			}]
-		}
+        if (secondDataPoints) {
+            options = {
+                animationEnabled: true,
+                animationDuration: 3000,
+                zoomEnabled: true,
+                backgroundColor: "#FFF",
+                title:{
+                    text: title
+                },
+                axisX: {
+                    stripLines: stripLines
+                },
+                axisY: {
+                    title: "Amplitud (µV)",
+                    includeZero: false
+                },
+                data: [{
+                    yValueFormatString: "#,###",
+                    xValueFormatString: "#(s)",
+                    type: "splineArea",
+                    dataPoints: dataPoints,
+                    showInLegend: true,
+                    name: 'Señal filtrada',
+                },
+                {
+                    yValueFormatString: "#,###",
+                    xValueFormatString: "#(s)",
+                    type: "splineArea",
+                    dataPoints: secondDataPoints,
+                    showInLegend: true,
+                    name: 'Señal sin filtrar',
+                }
+            ]
+            }
+        } else {
+            options = {
+                animationEnabled: true,
+                animationDuration: 3000,
+                zoomEnabled: true,
+                backgroundColor: "#FFF",
+                title:{
+                    text: title
+                },
+                axisX: {
+                    stripLines: stripLines
+                },
+                axisY: {
+                    title: "Amplitud (µV)",
+                    includeZero: false
+                },
+                data: [{
+                    yValueFormatString: "#,###",
+                    xValueFormatString: "#(s)",
+                    type: "splineArea",
+                    dataPoints: dataPoints
+                }]
+            }
+        }
 		return (
 		<div>
 			<CanvasJSChart options = {options} />
@@ -83,7 +133,8 @@ export default ChartComponent;
 ChartComponent.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
-    start: PropTypes.number
+    start: PropTypes.number,
+    secondData: PropTypes.array,
 }
 
 ChartComponent.defaultProps = {

@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 import Popup from "reactjs-popup";
 import SuiteEntity from "../entities/SuiteEntity";
 import DeleteSuiteUseCase from "../useCases/DeleteSuiteUseCase";
+import Spinner from "react-bootstrap/Spinner";
 
 
 
-class SuiteComponent extends Component{
+class SuiteElementListComponent extends Component{
     constructor(props){
         super(props);
         this._deleteSuite = this._deleteSuite.bind(this);
+
+        this.state = {loading: false};
+
+        this._loadSuiteCallback = this._loadSuiteCallback.bind(this);
     }
 
     _deleteSuite(closeCallback) {
@@ -19,10 +24,28 @@ class SuiteComponent extends Component{
         .then(()=> closeCallback())
     }
 
+    _loadSuiteCallback(){
+        const {suiteEntity, loadSuiteCallback} = this.props;
+        this.setState({loading: true});
+        loadSuiteCallback(suiteEntity.id)
+
+    }
+    _renderSpinnerIfNeeded() {
+        const {loading} = this.state;
+        if( loading ){
+            return (
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            )
+        }
+    }
+
     render() {
         const {suiteEntity} = this.props;
         return (
-            <li className="suite-li">
+            <li className="suite-li" onClick={this._loadSuiteCallback}>
+                {this._renderSpinnerIfNeeded()}
                 <div className="suite-name">
                     {suiteEntity.name}
                 </div>
@@ -68,8 +91,9 @@ class SuiteComponent extends Component{
         )
     }
 }
-export default SuiteComponent
+export default SuiteElementListComponent
 
-SuiteComponent.propTypes = {
+SuiteElementListComponent.propTypes = {
     suiteEntity: PropTypes.instanceOf(SuiteEntity),
+    loadSuiteCallback: PropTypes.func.isRequired,
 }

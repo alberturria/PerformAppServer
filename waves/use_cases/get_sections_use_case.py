@@ -15,8 +15,8 @@ class GetSectionsUseCase(GetSectionsUseCaseInterface):
         self._raw_sections = []
 
     def run(self):
-        self._rms_values = pd.DataFrame(self._wave_entiy._rms)
-        self._raw_values = pd.DataFrame(self._wave_entiy._raw)
+        self._rms_values = pd.DataFrame(self._wave_entiy._rms, dtype=float)
+        self._raw_values = pd.DataFrame(self._wave_entiy._raw, dtype=float)
 
         self._get_rms_sections()
         self._get_raw_sections()

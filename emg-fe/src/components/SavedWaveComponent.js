@@ -61,11 +61,17 @@ class SavedWaveComponent extends Component{
         const { rmsSections } = this.state;
 
         if (rmsSections) {
-            return rmsSections.map(({
+            const renderedSections = rmsSections.map(({
                 start, end, values, waveId
             }) => (
                 <ChartComponent title={`Sección`} data={values} start={start} />
             ));
+
+            return(
+                <div className="wave-sections-container">
+                    {renderedSections}
+                </div>
+            )
         }
     }
 
@@ -80,13 +86,13 @@ class SavedWaveComponent extends Component{
                 </div>
                 <div className="wave-info bubble">
                     <ul>
-                        <li><span className='wave-field'>Nombre del músculo: </span>{parsedMuscle}</li>
-                        <li><span className='wave-field'>RMS medio: </span>{avgRms} </li>
-                        <li><span className='wave-field'>Máxima contracción voluntaria: </span>{mvc} </li>
-                        <li><span className='wave-field'>Máxima contracción voluntaria histórica: </span>{historicMvc} </li>
+                        <li className="li-wave-card-details"><p className='wave-field'>Nombre del músculo: </p>{parsedMuscle}</li>
+                        <li className="li-wave-card-details"><p className='wave-field'>RMS medio: </p>{avgRms} </li>
+                        <li className="li-wave-card-details"><p className='wave-field'>Máxima contracción voluntaria: </p>{mvc} </li>
+                        <li className="li-wave-card-details"><p className='wave-field'>Máxima contracción voluntaria histórica: </p>{historicMvc} </li>
                     </ul>
                 </div>
-                <ChartComponent ref={this.rmsChartRef} title="RMS" data={rms} />
+                <ChartComponent ref={this.rmsChartRef} title="RMS" data={rms} secondData={raw}/>
                 <button
                     onClick={this._getRmsSections}>
                     Ver contracciones
