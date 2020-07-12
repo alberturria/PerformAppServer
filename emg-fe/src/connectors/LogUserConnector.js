@@ -8,7 +8,7 @@ export default class LogUserConnector extends LogUserConnectorInterface {
         this.email = email;
         this.password = password;
         this.userId = null;
-        this.url = `http://localhost:8000/log-user`;
+        this.url = `https://performapp.herokuapp.com/log-user`;
     }
 
     logUser() {
