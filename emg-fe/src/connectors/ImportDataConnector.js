@@ -8,7 +8,7 @@ export default class ImportDataConnector extends ImportDataConnectorInterface {
         this.userId = userId;
         this.formData = new FormData();
         this.formData.append('file', data);
-        this.url = `http://localhost:8000/import-data/${this.userId}`;
+        this.url = `${process.env.REACT_APP_URL}import-data/${this.userId}`;
     }
 
     import() {

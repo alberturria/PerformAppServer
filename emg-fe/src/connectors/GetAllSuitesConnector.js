@@ -7,7 +7,7 @@ export default class GetAllSuitesConnector extends GetAllSuitesConnectorInterfac
         super();
 
         this.userId = userId;
-        this.url = `http://localhost:8000/${this.userId}/suites-catalog`;
+        this.url = `${process.env.REACT_APP_URL}${this.userId}/suites-catalog`;
     }
 
     getAllSuites() {

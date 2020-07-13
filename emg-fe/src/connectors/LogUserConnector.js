@@ -8,7 +8,7 @@ export default class LogUserConnector extends LogUserConnectorInterface {
         this.email = email;
         this.password = password;
         this.userId = null;
-        this.url = `https://performapp.herokuapp.com/log-user`;
+        this.url = `${process.env.REACT_APP_URL}log-user`;
     }
 
     logUser() {

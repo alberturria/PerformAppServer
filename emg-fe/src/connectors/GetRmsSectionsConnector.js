@@ -7,7 +7,7 @@ export default class GetRmsSectionsConnector extends GetRmsSectionsConnectorInte
         super();
 
         this.waveId = waveId;
-        this.url = `http://localhost:8000/get-rms-sections/${this.waveId}`;
+        this.url = `${process.env.REACT_APP_URL}get-rms-sections/${this.waveId}`;
     }
 
     getRmsSections() {

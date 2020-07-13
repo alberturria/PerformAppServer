@@ -8,7 +8,7 @@ export default class GetSavedWavesConnector extends GetSavedWavesConnectorInterf
     constructor() {
         super();
 
-        this.url = `http://localhost:8000`;
+        this.url = `${process.env.REACT_APP_URL}`;
     }
 
     getSavedWaves() {

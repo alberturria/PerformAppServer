@@ -8,7 +8,7 @@ export default class CreateUserConnector extends CreateUserConnectorInterface {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.url = `http://localhost:8000/create-user`;
+        this.url = `${process.env.REACT_APP_URL}create-user`;
     }
 
     createUser() {
