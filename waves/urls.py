@@ -16,4 +16,3 @@ urlpatterns = [
     url(r'^(?P<user_id>\d+)/suites/(?P<suite_id>\d+)$', SuitesView.as_view(), name='suites_view'),
     url(r'$', WavesView.as_view(), name='process_waves'),
 ]
-
