@@ -12,7 +12,8 @@ export default class LogUserConnector extends LogUserConnectorInterface {
     }
 
     logUser() {
-        axios.defaults.withCredentials = true;
+        axios.defaults.xsrfHeaderName = "X-CSRFToken";
+        axios.defaults.xsrfCookieName = 'csrftoken';
         const data = {email: this.email, password: this.password}
         return axios({
           method: 'post',
