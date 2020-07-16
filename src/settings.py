@@ -29,7 +29,7 @@ DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
-ALLOWED_HOSTS = ['performapp.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
