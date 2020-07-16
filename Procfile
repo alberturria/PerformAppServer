@@ -1,1 +1,1 @@
-web: gunicorn EMG.src.wsgi --log-file -
+web: gunicorn src.src.wsgi --log-file -
