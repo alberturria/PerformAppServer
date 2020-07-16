@@ -38,7 +38,7 @@ def main():
         from django.core.management import execute_from_command_line
 
 
-        read_csv_file('./data/basic_mdurance-test.csv')
+#        read_csv_file('./data/basic_mdurance-test.csv')
     #    get_wave_data_access = GetWavesDataAccess()
     #    waves = get_wave_data_access.get_waves()
 
