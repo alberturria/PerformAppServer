@@ -53,7 +53,7 @@ class LogComponent extends Component{
         const { needCreateCallback } = this.props;
         return (
             <div className="registration-pane">
-                <h3>Registrese</h3>
+                <h3>Registrese {process.env.REACT_APP_URL}</h3>
                 <p className="registration-attribute">Email</p>
                 <input type="email" ref={this.emailRef} className="input-login"/>
                 <p className="registration-attribute">Password</p>
