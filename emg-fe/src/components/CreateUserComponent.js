@@ -28,7 +28,7 @@ class CreateUserComponent extends Component{
         const createUserUseCase = new CreateUserUseCase(this.usernameRef.current.value, this.emailRef.current.value, this.passwordRef.current.value);
         createUserUseCase.run()
         .then(()=> {
-            const userInformation = CreateUserUseCase.getUserId();
+            const userInformation = createUserUseCase.getUserId();
             const userId = userInformation['userId'];
             const username = userInformation['username'];
             logUserCallback(userId, username);
