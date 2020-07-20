@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from waves.views.create_sample_data_view import CreateSampleDataView
 from waves.views.create_user_view import CreateUserView
+from waves.views.export_to_pdf_view import ExportToPDFView
 from waves.views.import_data_view import ImportDataView
 from waves.views.log_user_view import LogUserView
 from waves.views.rms_sections_view import RmsSectionsView
@@ -16,5 +17,6 @@ urlpatterns = [
     url(r'^(?P<user_id>\d+)/suites-catalog$', SuitesCatalogView.as_view(), name='suites_catalog_view'),
     url(r'^(?P<user_id>\d+)/suites/(?P<suite_id>\d+)$', SuitesView.as_view(), name='suites_view'),
     url(r'^(?P<user_id>\d+)/create-sample-data$', CreateSampleDataView.as_view(), name='sample_data_view'),
+    url(r'^(?P<user_id>\d+)/export-to-pdf/(?P<suite_id>\d+)$', ExportToPDFView.as_view(), name='export_to_pdf_view'),
     url(r'$', WavesView.as_view(), name='process_waves'),
 ]

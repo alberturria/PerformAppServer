@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Performapp - ¡Cuida tu rendimiento!</title>
+    <style>
+        body {
+            font-family: "ARIALUNI";
+        }
+    </style>
+</head>
+<body>
+    <h1>Prueba: {{ suite_name }}<br />Fecha: {{ suite_date }}</h1>
+    <i><strong>Usuario que ha generado el PDF:</strong> {{ suite_owner }}</i>
+    <hr>
+
+    <h1>Resumen de la prueba</h1>
+
+    <p>Imagen de todas las señales filtradas</p>
+    <img src="data:image/png;base64,{{ all_waves_figure|safe }}">
+
+    {% for wave in waves %}
+
+    <div>
+        <p><b>Nombre del músculo:</b> {{ wave.muscle }}</p>
+        <p><b>Máxima contracción voluntaria:</b> {{ wave.mvc }} (µV) </p>
+        <p><b>Máxima contracción histórica voluntaria:</b> {{ wave.historic_mvc }} (µV)</p>
+
+        <img src="data:image/png;base64,{{ wave.rms_figure|safe }}">
+    </div>
+
+    {% endfor %}
+
+</body>
+</html>
