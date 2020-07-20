@@ -16,4 +16,4 @@ class Wave(models.Model):
     avg_rms = models.FloatField()
     mvc = models.FloatField()
     historic_mvc = models.FloatField()
-    suite = models.ForeignKey(Suite, on_delete=models.CASCADE, null=True)
+    suite = models.ForeignKey(Suite, on_delete=models.SET_NULL, null=True)
