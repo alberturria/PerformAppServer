@@ -11,8 +11,8 @@ class Suite(models.Model):
 
 class Wave(models.Model):
     muscle = models.CharField(max_length=255, null=True)
-    rms = models.CharField(validators=[validate_comma_separated_integer_list], max_length=500)
-    raw = models.CharField(validators=[validate_comma_separated_integer_list], max_length=500, default=[])
+    rms = models.CharField(validators=[validate_comma_separated_integer_list], max_length=5000)
+    raw = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50000, default=[])
     avg_rms = models.FloatField()
     mvc = models.FloatField()
     historic_mvc = models.FloatField()
