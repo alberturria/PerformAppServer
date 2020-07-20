@@ -54,7 +54,6 @@ def read_csv_file(file_path, second_file_path, user_id=None):
         suite.save()
 
         for item in range(2):
-            wave = Wave()
             for index in range(4):
                 muscle_name = names[index]
                 rms = total_rms[index]
@@ -62,5 +61,6 @@ def read_csv_file(file_path, second_file_path, user_id=None):
                 mvc = mvcs[index]
                 historic_mvc = historic_mvcs[index]
                 raw = total_raw[index]
-                wave = Wave(muscle=muscle_name, rms=rms, avg_rms=avg_rms, mvc=mvc, historic_mvc=historic_mvc, raw=raw, suite=suite)
+                wave = Wave(muscle=muscle_name, rms=rms, avg_rms=avg_rms, mvc=mvc, historic_mvc=historic_mvc, raw=raw,
+                            suite=suite)
                 wave.save()
