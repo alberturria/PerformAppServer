@@ -11,4 +11,4 @@ class CreateSampleDataView(APIView):
             return log_user_use_case.run()
 
         except Exception as exception:
-            return Response(data=exception, status=403)
+            return Response(data=exception.args[0], status=403)
