@@ -13,9 +13,33 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', config('AWS_ACCESS_KEY_ID'))
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', config('AWS_SECRET_ACCESS_KEY'))
+AWS_STORAGE_BUCKET_NAME = 'performapp-bucket'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_STATIC_LOCATION = 'static'
+STATICFILES_STORAGE = 'src.storage_backends.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+
+AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
+DEFAULT_FILE_STORAGE = 'src.storage_backends.PublicMediaStorage'
+
+AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
+PRIVATE_FILE_STORAGE = 'src.storage_backends.PrivateMediaStorage'
+
+AWS_S3_REGION_NAME = 'eu-west-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,6 +69,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'waves',
     'common',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -158,7 +183,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 django_heroku.settings(locals())
