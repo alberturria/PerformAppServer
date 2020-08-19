@@ -1,4 +1,3 @@
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from waves.use_cases.create_user_use_case import CreateUserUseCase
 
