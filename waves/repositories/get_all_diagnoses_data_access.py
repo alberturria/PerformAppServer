@@ -12,8 +12,12 @@ class GetAllDiagnosesDataAccess(GetAllDiagnosesDataAccessInterface):
         result = []
 
         for diagnosis in diagnoses:
+            suite_name = diagnosis.suite.name if diagnosis.suite else None
+            patient_name = diagnosis.suite.patient.name if diagnosis.suite and diagnosis.suite.patient else None
+
             diagnosis_entity = DiagnosisEntity(diagnosis.id, diagnosis.name, diagnosis.description, diagnosis.video.url,
-                                               diagnosis.owner.id, diagnosis.suite_id)
+                                               diagnosis.owner.id, diagnosis.suite_id, suite_name,
+                                               patient_name)
             result.append(diagnosis_entity)
 
         return result

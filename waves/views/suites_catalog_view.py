@@ -36,6 +36,7 @@ class SuitesCatalogView(APIView):
         csv = data.get('csv', None)
         video = data.get('video', None)
         custom_fields = data.get('customFields', None)
+        type = data.get('type', None)
         custom_fields_entities = []
         if custom_fields:
             custom_fields = json.loads(custom_fields)
@@ -43,7 +44,8 @@ class SuitesCatalogView(APIView):
                 custom_field_entity = CustomFieldEntity(None, custom_field['parameter'], custom_field['value'], None)
                 custom_fields_entities.append(custom_field_entity)
 
-        suite_entity = SuiteEntity(id, name, date, user_id, username, patient_id, diagnosis_id, csv, video,
-                                   custom_fields_entities)
+        suite_entity = SuiteEntity(id=id, name=name, date=date, user_id=user_id, username=username,
+                                   patient_id=patient_id, diagnosis_id=diagnosis_id, csv=csv, video=video,
+                                   custom_fields=custom_fields_entities, type=type)
 
         return suite_entity

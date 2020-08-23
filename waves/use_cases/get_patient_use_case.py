@@ -18,7 +18,7 @@ class GetPatientUseCase(GetPatientUseCaseInterface):
         result['patient'] = patient.__dict__
         result['suites'] = {}
         for suite in suites:
-            result['suite'][index] = suite.__dict__
+            result['suites'][index] = suite.__dict__
             index += 1
 
         return Response(data=result, status=Response.status_code)

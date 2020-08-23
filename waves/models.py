@@ -20,6 +20,9 @@ class Suite(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField(auto_now_add=True)
     patient = models.ForeignKey(Patient, on_delete=models.SET_NULL, null=True)
+    TYPE_GENERIC, TYPE_PADEL, TYPE_REHAB = 1, 2, 3
+    type = models.PositiveSmallIntegerField(choices=((TYPE_GENERIC, 'generic'), (TYPE_PADEL, 'padel'),
+                                                       (TYPE_REHAB, 'rehab')), default=1)
     video = models.FileField(upload_to='diagnoses', default='rehabilitacion-de-hombro.mp4',
                              storage=PrivateMediaStorage())
     owner = models.ForeignKey(User, on_delete=models.CASCADE)

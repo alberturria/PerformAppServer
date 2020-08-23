@@ -49,14 +49,13 @@ class ReadCSVFileDataAccess(ReadCSVFileDataAccessInterface):
 
         total_rms = [rms_1, rms_2, rms_3, rms_4]
 
-        for item in range(4):
-            for index in range(4):
-                muscle_name = names[index]
-                rms = total_rms[index]
-                avg_rms = avg_rmss[index]
-                mvc = mvcs[index]
-                historic_mvc = historic_mvcs[index]
-                raw = total_raw[index]
-                wave = Wave(muscle=muscle_name, rms=rms, avg_rms=avg_rms, mvc=mvc, historic_mvc=historic_mvc,
-                            raw=raw, suite=suite)
-                wave.save()
+        for index in range(4):
+            muscle_name = names[index]
+            rms = total_rms[index]
+            avg_rms = avg_rmss[index]
+            mvc = mvcs[index]
+            historic_mvc = historic_mvcs[index]
+            raw = total_raw[index]
+            wave = Wave(muscle=muscle_name, rms=rms, avg_rms=avg_rms, mvc=mvc, historic_mvc=historic_mvc,
+                        raw=raw, suite=suite)
+            wave.save()

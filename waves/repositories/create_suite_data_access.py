@@ -12,17 +12,18 @@ class CreateSuiteDataAccess(CreateSuiteDataAccessInterface):
     def create_suite(self):
         owner = User.objects.get(id=self._user_id)
         patient = None
-        diagnosis = None
         if self._suite_entity.patient_id:
             patient = Patient.objects.get(id=self._suite_entity.patient_id)
 
-        if self._suite_entity.diagnosis_id:
-            diagnosis = Diagnosis.objects.get(id=self._suite_entity.diagnosis_id)
-
-        suite = Suite(name=self._suite_entity.name, date=self._suite_entity.date, patient=patient, diagnosis=diagnosis,
+        suite = Suite(name=self._suite_entity.name, date=self._suite_entity.date, patient=patient,
                       owner=owner, video=self._suite_entity.video)
 
         suite.save()
+
+        if self._suite_entity.diagnosis_id:
+            diagnosis = Diagnosis.objects.get(id=self._suite_entity.diagnosis_id)
+            diagnosis.suite = suite
+            diagnosis.save()
 
         read_csv_data_access = ReadCSVFileDataAccess(self._suite_entity.csv, self._user_id, suite.id)
         read_csv_data_access.import_data()
