@@ -14,10 +14,63 @@
     <i><strong>Usuario que ha generado el PDF:</strong> {{ suite_owner }}</i>
     <hr>
 
+    {% if patient %}
+        <h2>Información del paciente</h2>
+
+    <div>
+        <p><b>Nombre del paciente:</b> {{ patient_name }}</p>
+        <p><b>Correo electrónico:</b> {{ patient_mail }}</p>
+        <p><b>Género:</b> {{ patient_gender }}</p>
+        <p><b>Edad:</b> {{ patient_age }}</p>
+        <p><b>Teléfono:</b> {{ patient_phone }}</p>
+    </div>
+
+    {% endif %}
+
+    {% if diagnosis %}
+        <h2>Información del diagnóstico</h2>
+
+    <div>
+        <p><b>Nombre del diagnóstico:</b> {{ diagnosis_name }}</p>
+        <p><b>Descripción:</b> {{ diagnosis_description }}</p>
+    </div>
+
+    {% endif %}
+
     <h1>Resumen de la prueba</h1>
 
     <p>Imagen de todas las señales filtradas</p>
     <img src="data:image/png;base64,{{ all_waves_figure|safe }}">
+
+    {% if muscles %}
+
+    {% for wave in wave_with_statistics %}
+    <div>
+        <p><b>Nombre del músculo:</b> {{ wave.0.muscle }}</p>
+        <p><b>Máxima contracción voluntaria:</b> {{ wave.0.mvc }} (µV) </p>
+        <p><b>Máxima contracción histórica voluntaria:</b> {{ wave.0.historic_mvc }} (µV)</p>
+
+        <img src="data:image/png;base64,{{ wave.0.rms_figure|safe }}">
+    </div>
+    <div>
+        <p><b>Kurtosis:</b> {{ wave.1.kurtosis }}</p>
+        <p><b>Entropía:</b> {{ wave.1.entropy }}</p>
+        <p><b>Valor máximo:</b> {{ wave.1.maximum }}</p>
+        <p><b>Valor mínimo:</b> {{ wave.1.minimum }}</p>
+        <p><b>Cruces por cero:</b> {{ wave.1.zero_crossing_counts }}</p>
+        <p><b>Media aritmética:</b> {{ wave.1.arithmetic_mean }}</p>
+        <p><b>Media armónica:</b> {{ wave.1.harmonic_mean }}</p>
+        <p><b>Media geométrica:</b> {{ wave.1.geometric_mean }}</p>
+        <p><b>Media recortada:</b> {{ wave.1.trimmed_mean }}</p>
+        <p><b>Mediana:</b> {{ wave.1.median }}</p>
+        <p><b>Moda:</b> {{ wave.1.mode }}</p>
+        <p><b>Varianza:</b> {{ wave.1.variance }}</p>
+
+    </div>
+
+    {% endfor %}
+
+    {% else %}
 
     {% for wave in waves %}
 
@@ -30,6 +83,8 @@
     </div>
 
     {% endfor %}
+
+    {% endif %}
 
 </body>
 </html>

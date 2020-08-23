@@ -12,14 +12,19 @@ class Patient(models.Model):
                                                        (GENDER_OTHER_GENDER, 'other')), default=1)
     age = models.PositiveIntegerField(blank=True, null=True)
     phone_number = models.PositiveIntegerField(blank=True, null=True)
-    photo = models.ImageField(upload_to='patients', storage=PrivateMediaStorage())
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    photo = models.ImageField(upload_to='patients', default='blank-profile-picture.png', storage=PrivateMediaStorage())
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 
 class Suite(models.Model):
     name = models.CharField(max_length=255)
     date = models.DateField(auto_now_add=True)
     patient = models.ForeignKey(Patient, on_delete=models.SET_NULL, null=True)
+    TYPE_GENERIC, TYPE_PADEL, TYPE_REHAB = 1, 2, 3
+    type = models.PositiveSmallIntegerField(choices=((TYPE_GENERIC, 'generic'), (TYPE_PADEL, 'padel'),
+                                                       (TYPE_REHAB, 'rehab')), default=1)
+    video = models.FileField(upload_to='diagnoses', default='rehabilitacion-de-hombro.mp4',
+                             storage=PrivateMediaStorage())
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -30,4 +35,17 @@ class Wave(models.Model):
     avg_rms = models.FloatField()
     mvc = models.FloatField()
     historic_mvc = models.FloatField()
+    suite = models.ForeignKey(Suite, on_delete=models.SET_NULL, null=True)
+
+
+class Diagnosis(models.Model):
+    description = models.TextField()
+    name = models.CharField(max_length=255)
+    video = models.FileField(upload_to='diagnoses', default='rehabilitacion-de-hombro.mp4', storage=PrivateMediaStorage())
+    suite = models.ForeignKey(Suite, on_delete=models.SET_NULL, null=True)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+class CustomField(models.Model):
+    parameter = models.CharField(max_length=255)
+    value = models.CharField(max_length=5000)
     suite = models.ForeignKey(Suite, on_delete=models.SET_NULL, null=True)

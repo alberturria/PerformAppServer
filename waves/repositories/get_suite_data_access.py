@@ -1,9 +1,10 @@
 import math
+from waves.entities.custom_field_entity import CustomFieldEntity
 
 from waves.entities.suite_entity import SuiteEntity
 from waves.entities.wave_entity import WaveEntity
 from waves.interfaces.repositories.get_suite_data_access_interface import GetSuiteDataAccessInterface
-from waves.models import Wave, Suite
+from waves.models import Wave, Suite, Diagnosis, CustomField
 from waves.repositories.get_raw_data_access import GetRAWDataAccess
 from waves.repositories.get_rms_data_access import GetRMSDataAccess
 
@@ -16,7 +17,21 @@ class GetSuiteDataAccess(GetSuiteDataAccessInterface):
 
     def get_suite(self):
         suite = Suite.objects.get(id=self._suite_id, owner__id=self._user_id)
-        suite_entity = SuiteEntity(suite.id, suite.name, suite.date, suite.owner.id, suite.owner.username)
+        possible_diagnosis = Diagnosis.objects.filter(suite__id=suite.id).first()
+        diagnosis_id = possible_diagnosis.id if possible_diagnosis else None
+        diagnosis_name = possible_diagnosis.name if possible_diagnosis else None
+        patient_name = suite.patient.name if suite.patient else None
+
+        custom_fields_entities = []
+        custom_fields = CustomField.objects.filter(suite__id=suite.id)
+        for custom_field in custom_fields:
+            custom_fields_entities.append(
+                CustomFieldEntity(custom_field.id, custom_field.parameter, custom_field.value, suite.id).__dict__)
+
+        suite_entity = SuiteEntity(id=suite.id, name=suite.name, date=suite.date, user_id=suite.owner.id,
+                                   username=suite.owner.username, patient_id=suite.patient_id, patient_name=patient_name,
+                                   diagnosis_id=diagnosis_id, diagnosis_name=diagnosis_name, csv=None, video=suite.video.url,
+                                   custom_fields=custom_fields_entities, type=suite.type)
         return suite_entity
 
     def get_waves(self):

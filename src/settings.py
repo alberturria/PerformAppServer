@@ -91,14 +91,16 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://localhost:3000',
     'http://127.0.0.1:8000',
+    'https://127.0.0.1:8000',
     'http://performapp.herokuapp.com',
     'https://performapp.herokuapp.com',
 ]
 
 CORS_ORIGIN_REGEX_WHITELIST = [
     'http://localhost:3000'
-    'http://localhost:3000',
+    'https://localhost:3000',
     'http://127.0.0.1:8000',
+    'https://127.0.0.1:8000',
     'http://performapp.herokuapp.com/',
     'https://performapp.herokuapp.com/',
     'http://performapp.herokuapp.com',
