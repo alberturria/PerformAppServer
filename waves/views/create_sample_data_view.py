@@ -7,8 +7,8 @@ class CreateSampleDataView(APIView):
 
     def post(self, request, user_id):
         try:
-            log_user_use_case = CreateSampleDataUseCase(user_id)
-            return log_user_use_case.run()
+            create_sample_data_use_case = CreateSampleDataUseCase(user_id)
+            return create_sample_data_use_case.run()
 
         except Exception as exception:
             return Response(data=exception.args[0], status=403)

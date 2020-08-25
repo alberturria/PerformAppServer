@@ -1,9 +1,11 @@
 from rest_framework.response import Response
 from waves.adaptors.export_to_pdf_adaptor import ExportToPDFAdaptor
+from waves.entities.fatigue_entity import FatigueEntity
 from waves.interfaces.use_cases.export_to_pdf_use_case_interface import ExportToPDFUseCaseInterface
 from waves.repositories.get_diagnosis_data_access import GetDiagnosisDataAccess
 from waves.repositories.get_patient_data_access import GetPatientDataAccess
 from waves.repositories.get_suite_data_access import GetSuiteDataAccess
+from waves.use_cases.fatigue_analysis_use_case import FatigueAnalysisUseCase
 from waves.use_cases.get_wave_statistics_use_case import GetWaveStatisticsUseCase
 
 
@@ -33,8 +35,12 @@ class ExportToPDFUseCase(ExportToPDFUseCaseInterface):
             diagnosis_entity = diagnosis_data_access.get_diagnosis()
         else:
             diagnosis_entity = None
+
+        fatigue_use_case = FatigueAnalysisUseCase(waves_entities)
+        fatigue_entities = fatigue_use_case.run()
+
         self.export_to_pdf_adaptor = ExportToPDFAdaptor(suite_entity, waves_entities, patient_entity, diagnosis_entity,
-                                                        statistics_entities, self._selected_options)
+                                                        statistics_entities, self._selected_options, fatigue_entities)
 
     def get_pdf(self):
         return self.export_to_pdf_adaptor.get_pdf()

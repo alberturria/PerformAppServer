@@ -6,6 +6,7 @@ from waves.interfaces.use_cases.send_mail_use_case_interface import SendMailUseC
 from waves.repositories.get_patient_data_access import GetPatientDataAccess
 from waves.repositories.get_suite_data_access import GetSuiteDataAccess
 from waves.use_cases.export_to_pdf_use_case import ExportToPDFUseCase
+from rest_framework.response import Response
 
 
 class SendMailUseCase(SendMailUseCaseInterface):
@@ -34,4 +35,6 @@ class SendMailUseCase(SendMailUseCaseInterface):
 
         email.attach_binary(content=pdf, filename='readme.pdf')
 
-        # return email.send()
+        email.send()
+
+        return Response(status=Response.status_code)

@@ -55,7 +55,7 @@ class GetSuiteDataAccess(GetSuiteDataAccessInterface):
             mvc = Wave.objects.get(id=wave_id).mvc
             historic_mvc = Wave.objects.get(id=wave_id).historic_mvc
     
-            wave_entity = WaveEntity(id=wave_id, muscle=muscle, rms=rms, raw=cutted_raw, avg_rms=avg_rms, mvc=mvc,
+            wave_entity = WaveEntity(id=wave_id, muscle=muscle, rms=rms, raw=raw, avg_rms=avg_rms, mvc=mvc,
                               historic_mvc=historic_mvc)
             waves_entities.append(wave_entity)
 

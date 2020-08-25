@@ -42,6 +42,21 @@
     <p>Imagen de todas las señales filtradas</p>
     <img src="data:image/png;base64,{{ all_waves_figure|safe }}">
 
+    {% if fatigue %}
+    {% for fatigue_element in fatigue%}
+    {% if fatigue_element.increased%}
+        <div>
+            <p><b>La pareja de músculos:</b> {{ fatigue_element.muscles }} han sufrido un aumento de la fatiga un {{ fatigue_element.percentage }}%</p>
+        </div>
+    {% else %}
+        <div>
+            <p><b>La pareja de músculos:</b> {{ fatigue_element.muscles }} han sufrido un decremento de la fatiga de un {{ fatigue_element.percentage }}%</p>
+        </div>
+    {% endif %}
+    {% endfor %}
+
+    {% endif %}
+
     {% if muscles %}
 
     {% for wave in wave_with_statistics %}

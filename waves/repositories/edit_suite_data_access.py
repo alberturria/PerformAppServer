@@ -40,7 +40,12 @@ class EditSuiteDataAccess(EditSuiteDataAccessInterface):
 
         suite.save()
 
-        read_csv_data_access = ReadCSVFileDataAccess(self._suite_entity.csv, self._user_id, suite.id)
+        if self._suite_entity.csv:
+            csv_file = self._suite_entity.csv
+        else:
+            csv_file = './data/sample-data.csv'
+
+        read_csv_data_access = ReadCSVFileDataAccess(csv_file, self._user_id, suite.id)
         read_csv_data_access.import_data()
 
         if self._suite_entity.custom_fields:
