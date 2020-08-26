@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from waves.adaptors.export_to_pdf_adaptor import ExportToPDFAdaptor
+from waves.adapters.export_to_pdf_adaptor import ExportToPDFAdaptor
 from waves.entities.fatigue_entity import FatigueEntity
 from waves.interfaces.use_cases.export_to_pdf_use_case_interface import ExportToPDFUseCaseInterface
 from waves.repositories.get_diagnosis_data_access import GetDiagnosisDataAccess

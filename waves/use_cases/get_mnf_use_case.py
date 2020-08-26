@@ -1,4 +1,5 @@
 from waves.interfaces.use_cases.get_mnf_use_case_interface import GetMNFUseCaseInterface
+from waves.use_cases.butter_filter_signal_use_case import ButterFilterUseCase
 from waves.use_cases.get_psdf_use_case import GetPSDFUseCase
 
 
@@ -10,6 +11,9 @@ class GetMNFUseCase(GetMNFUseCaseInterface):
         self._increment = 192
 
     def run(self):
+        butter_use_case = ButterFilterUseCase(self._wave)
+        butter_use_case.run()
+        self._wave = butter_use_case.get_result()
         number_of_windows = int((len(self._wave) - self._window_size) / self._increment) + 1
         start = 0
         end = self._window_size

@@ -6,6 +6,7 @@ import xhtml2pdf.pisa as pisa
 from django.http import HttpResponse
 from django.template.loader import get_template
 import matplotlib.pyplot as plt
+import numpy as np
 
 from waves.interfaces.adaptors.export_to_pdf_adaptor_interface import ExportToPDFAdaptorInterface
 
@@ -48,6 +49,8 @@ class ExportToPDFAdaptor(ExportToPDFAdaptorInterface):
         self._info_dict['suite_date'] = self._suite_entity.date
         self._info_dict['suite_owner'] = self._suite_entity.username
         self._info_dict['all_waves_figure'] = self._get_all_waves_figure()
+        self._info_dict['activation_figure'] = self._get_activation_figure()
+        self._info_dict['symmetry_figure'] = self._get_symmetry_figure()
         self._info_dict['waves'] = []
         self._info_dict['statistics'] = []
         self._info_dict['fatigue'] = []
@@ -94,6 +97,7 @@ class ExportToPDFAdaptor(ExportToPDFAdaptorInterface):
         plt.plot(wave._rms)
         plt.xlabel('Tiempo (0.25s)')
         plt.ylabel('Amplitud (µV)')
+        plt.grid()
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -105,11 +109,12 @@ class ExportToPDFAdaptor(ExportToPDFAdaptorInterface):
         return graphic.decode('utf-8')
 
     def _get_all_waves_figure(self):
-        fig = plt.figure(figsize=(8, 4))
+        plt.figure(figsize=(8, 4))
         for wave in self._waves_entities:
             plt.plot(wave._rms)
         plt.xlabel('Tiempo (0.25s)')
         plt.ylabel('Amplitud (µV)')
+        plt.grid()
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -169,3 +174,69 @@ class ExportToPDFAdaptor(ExportToPDFAdaptorInterface):
 
         else:
             self._info_dict['muscles'] = False
+
+    def _get_activation_figure(self):
+        plt.figure(figsize=(4, 4))
+        fig1, ax1 = plt.subplots()
+        total_rms = 0
+        labels = []
+        sizes = []
+        for wave in self._waves_entities:
+            total_rms = total_rms + wave._avg_rms
+
+        for wave in self._waves_entities:
+            labels.append(wave._muscle.split('_')[1])
+            sizes.append(wave._avg_rms*100/total_rms)
+
+        ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
+                shadow=True, startangle=90, textprops={'fontsize': 8})
+        ax1.axis('equal')
+        plt.title('Activación muscular')
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+
+        graphic = base64.b64encode(image_png)
+        return graphic.decode('utf-8')
+
+    def _get_symmetry_figure(self):
+        plt.figure(figsize=(4, 4))
+        plt.subplots()
+        first_couple_label = '{m1} - {m2}'.format(m1=self._waves_entities[0]._muscle.split('_')[1],
+                                                  m2=self._waves_entities[2]._muscle.split('_')[1])
+
+        second_couple_label = '{m1} - {m2}'.format(m1=self._waves_entities[1]._muscle.split('_')[1],
+                                                  m2=self._waves_entities[3]._muscle.split('_')[1])
+
+        if self._waves_entities[0]._avg_rms > self._waves_entities[2]._avg_rms:
+           first_couple_symmetry = (self._waves_entities[2]._avg_rms / self._waves_entities[0]._avg_rms) * 100
+        else:
+            first_couple_symmetry = (self._waves_entities[0]._avg_rms / self._waves_entities[2]._avg_rms) * 100
+
+        if self._waves_entities[1]._avg_rms > self._waves_entities[3]._avg_rms:
+            second_couple_symmetry = (self._waves_entities[3]._avg_rms / self._waves_entities[1]._avg_rms) * 100
+        else:
+            second_couple_symmetry = (self._waves_entities[1]._avg_rms / self._waves_entities[3]._avg_rms) * 100
+
+        labels = (first_couple_label, second_couple_label)
+        y_pos = np.arange(len(labels))
+        data = [first_couple_symmetry, second_couple_symmetry]
+
+        plt.bar(y_pos, data, align='center', alpha=0.5, zorder=3)
+        plt.grid(zorder=0)
+        plt.xticks(y_pos, labels)
+        plt.xticks(fontsize=6)
+        plt.ylabel("Simetría (%)")
+        plt.title('Simetría muscular')
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+
+        graphic = base64.b64encode(image_png)
+        return graphic.decode('utf-8')

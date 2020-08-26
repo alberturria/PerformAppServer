@@ -4,14 +4,12 @@ from scipy.fft import fft
 
 
 class GetEnergyUseCase(GetEnergyUseCaseInterface):
-    def __init__(self, wave_id):
-        self._wave_id = wave_id
+    def __init__(self, wave):
+        self._wave = wave
         self._energy = None
 
     def run(self):
-        get_raw_data_access = GetRAWDataAccess(self._wave_id)
-        raw = get_raw_data_access.get_raw()
-        xf = fft(raw)
+        xf = fft(self._wave)
         self._energy = sum(abs(xf) ** 2) / len(xf)
 
     def get_result(self):

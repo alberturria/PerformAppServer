@@ -1,6 +1,6 @@
 class WaveStatisticsEntity(object):
     def __init__(self, id, kurtosis, entropy, maximum, minimum, zero_crossing_counts, arithmetic_mean, harmonic_mean,
-                 geometric_mean, trimmed_mean, median, mode, variance):
+                 geometric_mean, trimmed_mean, median, mode, variance, energy, mdf, mnf):
         self._id = id
         self.kurtosis = kurtosis
         self.entropy = entropy
@@ -14,3 +14,6 @@ class WaveStatisticsEntity(object):
         self.median = median
         self.mode = mode
         self.variance = variance
+        self.energy = energy
+        self.mdf = mdf
+        self.mnf = mnf
