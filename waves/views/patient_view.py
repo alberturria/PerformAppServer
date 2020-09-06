@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waves.entities.patient_entity import PatientEntity
@@ -7,8 +8,11 @@ from waves.use_cases.get_patient_use_case import GetPatientUseCase
 
 
 class PatientView(APIView):
+    permission_classes = (IsAuthenticated,)
     def delete(self, request, user_id, patient_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             delete_patient_use_case = DeletePatientUseCase(user_id, patient_id)
             return delete_patient_use_case.run()
 

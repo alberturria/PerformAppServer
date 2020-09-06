@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from waves.interfaces.repositories.create_user_data_access_interface import CreateUserDataAccessInterface
+from rest_framework.authtoken.models import Token
 
 
 class CreateUserDataAccess(CreateUserDataAccessInterface):
@@ -15,4 +16,5 @@ class CreateUserDataAccess(CreateUserDataAccessInterface):
             email=self._email
         )
         user.save()
-        return {'user_id': user.id, 'username': user.username}
+        token, created = Token.objects.get_or_create(user=user)
+        return {'user_id': user.id, 'username': user.username, 'token': token.key}

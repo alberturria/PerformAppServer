@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waves.entities.diagnosis_entity import DiagnosisEntity
@@ -6,8 +7,12 @@ from waves.use_cases.get_all_diagnoses_use_case import GetAllDiagnosesUseCase
 
 
 class DiagnosesCatalogView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, user_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             get_all_diagnoses_use_case = GetAllDiagnosesUseCase(user_id)
             return get_all_diagnoses_use_case.run()
 
@@ -16,6 +21,8 @@ class DiagnosesCatalogView(APIView):
 
     def post(self, request, user_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             diagnosis_entity = self._create_diagnosis_entity(request.data)
             create_diagnosis_use_case = CreateDiagnosisUseCase(user_id, diagnosis_entity)
             return create_diagnosis_use_case.run()

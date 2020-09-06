@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waves.entities.diagnosis_entity import DiagnosisEntity
@@ -7,8 +8,11 @@ from waves.use_cases.get_diagnosis_use_case import GetDiagnosisUseCase
 
 
 class DiagnosisView(APIView):
+    permission_classes = (IsAuthenticated,)
     def delete(self, request, user_id, diagnosis_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             delete_diagnosis_use_case = DeleteDiagnosisUseCase(user_id, diagnosis_id)
             return delete_diagnosis_use_case.run()
 
@@ -17,6 +21,8 @@ class DiagnosisView(APIView):
 
     def get(self, request, user_id, diagnosis_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             get_diagnosis_use_case = GetDiagnosisUseCase(user_id, diagnosis_id)
             return get_diagnosis_use_case.run()
 
@@ -25,6 +31,8 @@ class DiagnosisView(APIView):
 
     def put(self, request, user_id, diagnosis_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             diagnosis_entity = self._create_diagnosis_entity(request.data)
             edit_diagnosis_use_case = EditDiagnosisUseCase(user_id, diagnosis_entity)
             return edit_diagnosis_use_case.run()

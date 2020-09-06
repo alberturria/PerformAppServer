@@ -1,8 +1,9 @@
-from rest_framework.views import APIView
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.response import Response
 from waves.use_cases.create_user_use_case import CreateUserUseCase
 
 
-class CreateUserView(APIView):
+class CreateUserView(ObtainAuthToken):
 
     def post(self, request):
         try:
@@ -13,7 +14,7 @@ class CreateUserView(APIView):
             return create_user_use_case.run()
 
         except Exception as exception:
-            print(exception)
+            return Response(data='Error', status=500)
 
 
     def options(self, request, *args, **kwargs):

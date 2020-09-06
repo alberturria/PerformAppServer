@@ -1,9 +1,10 @@
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waves.use_cases.log_user_use_case import LogUserUseCase
 
 
-class LogUserView(APIView):
+class LogUserView(ObtainAuthToken):
 
     def post(self, request):
         try:

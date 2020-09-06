@@ -1,5 +1,6 @@
 import json
 
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waves.entities.custom_field_entity import CustomFieldEntity
@@ -10,8 +11,12 @@ from waves.use_cases.get_suite_use_case import GetSuiteUseCase
 
 
 class SuitesView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def delete(self, request, user_id, suite_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             delete_suite_use_case = DeleteSuiteUseCase(user_id, suite_id)
             return delete_suite_use_case.run()
 
@@ -20,6 +25,8 @@ class SuitesView(APIView):
 
     def get(self, request, user_id, suite_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             get_suite_use_case = GetSuiteUseCase(user_id, suite_id)
             return get_suite_use_case.run()
 
@@ -28,6 +35,8 @@ class SuitesView(APIView):
 
     def put(self, request, user_id, suite_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             suite_entity = self._create_suite_entity(request.data)
             edit_suite_use_case = EditSuiteUseCase(user_id, suite_entity)
             return edit_suite_use_case.run()

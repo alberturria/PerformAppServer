@@ -1,4 +1,6 @@
 import json
+
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waves.entities.custom_field_entity import CustomFieldEntity
@@ -8,8 +10,12 @@ from waves.use_cases.get_all_suites_use_case import GetAllSuitesUseCase
 
 
 class SuitesCatalogView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, user_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             get_all_sections_use_case = GetAllSuitesUseCase(user_id)
             return get_all_sections_use_case.run()
 
@@ -18,6 +24,8 @@ class SuitesCatalogView(APIView):
 
     def post(self, request, user_id):
         try:
+            if request.auth.user_id is not int(user_id):
+                raise Exception
             suite_entity = self._create_suite_entity(request.data)
             create_suite_use_case = CreateSuiteUseCase(user_id, suite_entity)
             return create_suite_use_case.run()
